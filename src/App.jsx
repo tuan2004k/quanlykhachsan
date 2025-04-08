@@ -1,10 +1,11 @@
 import React from 'react';
-import LoginForm from './Screens/LoginScreen';
+
+import LoginScreen from './Screens/LoginScreen';
 
 function App() {
   return (
     <div>
-      <LoginForm />
+      <LoginScreen />
     </div>
   );
 }
