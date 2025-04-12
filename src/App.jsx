@@ -1,10 +1,9 @@
 import React from 'react';
-
-import LoginScreen from './Screens/LoginScreen';
+import LoginScreen from './Screens/LoginScreen'; // Điều chỉnh đường dẫn theo cấu trúc thư mục
 
 function App() {
   return (
-    <div>
+    <div className="app">
       <LoginScreen />
     </div>
   );
