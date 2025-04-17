@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import InputField from "../Components/InputField";
 import Button from "../Components/Button";
 import { Link } from "react-router-dom"; // To navigate to the login page
+import Logo from "../assets/Image/Logo.png";
+import Header from "../Common/Header";
+import Footer from "../Common/Footer";
 
 const SignUpScreen = () => {
   const [formData, setFormData] = useState({
@@ -64,11 +67,12 @@ const SignUpScreen = () => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
+
+    <div className="flex h-screen overflow-hidden">   
       {/* Left Side Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-6">
+      <div className="w-full md:w-1/2 flex items-center justify-center p-10">
         <form onSubmit={handleSubmit}>
-          <h1 className="text-3xl font-bold mb-6 text-center">Sign Up</h1>
+          <img src={Logo}  className="w-27 h-27 mx-auto pb-4" alt="" srcset="" />
           
 
           <div className="space-y-4">
@@ -176,7 +180,7 @@ const SignUpScreen = () => {
               Sign Up
             </Button>
 
-            <p className="text-center mt-6 text-indigo-600">
+            <p className="text-center text-indigo-600">
               Don't have an account?{" "}
               <Link to="/login" className="font-semibold hover:underline">
                 Login
@@ -189,7 +193,7 @@ const SignUpScreen = () => {
       {/* Right Side Image */}
       <div className="flex-1 hidden md:block">
         <img
-          src="src/assets/Image/a2.jpg"
+          src="src/assets/Image/Hotel.jpg"
           alt="Hotel"
           className="w-full h-full object-cover"
         />

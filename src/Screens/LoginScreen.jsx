@@ -1,22 +1,31 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import InputField from "../Components/InputField"; 
-import Button from "../Components/Button"; // Đảm bảo đường dẫn đúng
-import Hotel from "../assets/Image/a2.jpg"
+import Button from "../Components/Button"; 
+import Hotel from "../assets/Image/Hotel.jpg"
 
 const LoginScreen = () => {
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
+  // Regex kiểm tra email
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  // Regex kiểm tra số điện thoại (chỉ là ví dụ, bạn có thể tùy chỉnh theo yêu cầu)
+  const phoneRegex = /^[0-9]{10,15}$/;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
 
+    // Kiểm tra email hoặc số điện thoại
     if (!emailOrPhone) {
       newErrors.emailOrPhone = "Please enter your email or phone number.";
+    } else if (!emailRegex.test(emailOrPhone) && !phoneRegex.test(emailOrPhone)) {
+      newErrors.emailOrPhone = "Please enter a valid email or phone number.";
     }
 
+    // Kiểm tra mật khẩu
     if (!password) {
       newErrors.password = "Password is required.";
     }
@@ -25,14 +34,15 @@ const LoginScreen = () => {
 
     if (Object.keys(newErrors).length === 0) {
       console.log("Login with:", { emailOrPhone, password });
+      // Gọi API để login ở đây
     }
   };
 
   return (
     <div className="flex h-screen">
       <div className="md:flex md:w-1/2 relative hidden">
-      <img src={Hotel} alt="Hotel" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-opacity-40  flex items-end p-8">
+        <img src={Hotel} alt="Hotel" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-opacity-40 flex items-end p-8">
           <div className="text-white">
             <h2 className="text-3xl font-bold mb-4">
               Effortless Hotel Management for Exceptional Guest Experiences
@@ -75,6 +85,8 @@ const LoginScreen = () => {
               onChange={(e) => setEmailOrPhone(e.target.value)}
               error={errors.emailOrPhone}
             />
+            {errors.emailOrPhone && <p className="text-red-500 text-sm">{errors.emailOrPhone}</p>}
+            
             <InputField
               type="password"
               placeholder="Password"
@@ -82,11 +94,14 @@ const LoginScreen = () => {
               onChange={(e) => setPassword(e.target.value)}
               error={errors.password}
             />
+            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+
             <div className="text-right">
-              <a href="#" className="text-sm text-indigo-600 hover:underline">
+              <Link to="/forgot-password" className="text-sm text-indigo-600 hover:underline">
                 Forgot Password?
-              </a>
+              </Link>
             </div>
+
             <Button
               type="submit"
               className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
