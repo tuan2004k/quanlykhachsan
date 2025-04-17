@@ -1,14 +1,17 @@
-import React from 'react';
-import LoginScreen from './Screens/LoginScreen'; 
-import SignUpScreen from './Screens/SignUp/SignUpScreen';// Điều chỉnh đường dẫn theo cấu trúc thư mục
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginScreen from "./Screens/LoginScreen";
+import SignUpScreen from "./Screens/SignUpScreen";
 
 function App() {
   return (
-    <div className="app">
-      <LoginScreen />
-      <SignUpScreen/>
-    </div>
-
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginScreen />} />
+        <Route path="/signup" element={<SignUpScreen />} />
+        <Route path="/" element={<LoginScreen />} />
+      </Routes>
+    </Router>
   );
-};
+}
+
 export default App;

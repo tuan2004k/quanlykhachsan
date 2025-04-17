@@ -1,15 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import InputField from "../Components/InputField"; 
+import Button from "../Components/Button"; // Đảm bảo đường dẫn đúng
+import Hotel from "../assets/Image/a2.jpg"
 
 const LoginScreen = () => {
+  const [emailOrPhone, setEmailOrPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newErrors = {};
+
+    if (!emailOrPhone) {
+      newErrors.emailOrPhone = "Please enter your email or phone number.";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required.";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      console.log("Login with:", { emailOrPhone, password });
+    }
+  };
+
   return (
     <div className="flex h-screen">
-      <div className="hidden md:flex md:w-1/2 relative">
-        <img
-          src="https://pistachiohotel.com/UploadFile/Gallery/Overview/a2.jpg"
-          alt="Hotel"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg bg-opacity-40 flex items-end p-8">
+      <div className="md:flex md:w-1/2 relative hidden">
+      <img src={Hotel} alt="Hotel" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-opacity-40  flex items-end p-8">
           <div className="text-white">
             <h2 className="text-3xl font-bold mb-4">
               Effortless Hotel Management for Exceptional Guest Experiences
@@ -18,21 +41,22 @@ const LoginScreen = () => {
           </div>
         </div>
       </div>
+
       <div className="w-full md:w-1/2 flex items-center justify-center p-6">
         <div className="w-full max-w-md">
           <h2 className="text-2xl font-bold mb-6 text-center">
             Welcome to <span className="text-indigo-600">8 BROSS</span>
           </h2>
 
-          <button className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 rounded-lg py-3 px-4 mb-4 hover:bg-gray-50 transition">
+          <Button className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 rounded-lg py-3 px-4 mb-4 hover:bg-gray-50 transition">
             <img src="https://img.icons8.com/color/24/000000/google-logo.png" alt="Google" />
             Login with Google
-          </button>
+          </Button>
 
-          <button className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg py-3 px-4 mb-6 hover:bg-blue-700 transition">
+          <Button className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg py-3 px-4 mb-6 hover:bg-blue-700 transition">
             <img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" />
             Login with Facebook
-          </button>
+          </Button>
 
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
@@ -43,35 +67,39 @@ const LoginScreen = () => {
             </div>
           </div>
 
-          <form className="space-y-4">
-            <input
-              type="email"
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <InputField
+              type="text"
               placeholder="Email or Phone Number"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              value={emailOrPhone}
+              onChange={(e) => setEmailOrPhone(e.target.value)}
+              error={errors.emailOrPhone}
             />
-            <input
+            <InputField
               type="password"
               placeholder="Password"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              error={errors.password}
             />
             <div className="text-right">
               <a href="#" className="text-sm text-indigo-600 hover:underline">
                 Forgot Password?
               </a>
             </div>
-            <button
+            <Button
               type="submit"
               className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               Login
-            </button>
+            </Button>
           </form>
 
           <p className="text-center mt-6 text-indigo-600">
             Don't have an account?{" "}
-            <a href="#" className="font-semibold hover:underline">
+            <Link to="/signup" className="font-semibold hover:underline">
               Sign Up
-            </a>
+            </Link>
           </p>
         </div>
       </div>
