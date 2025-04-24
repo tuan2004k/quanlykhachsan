@@ -9,11 +9,11 @@ import {
 const Footer = () => {
   return (
     <footer className="w-full bg-[#1A1E43] text-white px-6 py-5">
-      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-6 gap-8 text-sm">
+      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 text-sm">
         {/* Logo */}
         <div className="md:col-span-1">
           <div className="text-xl font-bold mb-4">
-            <span ></span>8Bross
+            <span >8Bross</span>
           </div>
         </div>
 

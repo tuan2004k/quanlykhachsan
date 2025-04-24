@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginScreen from "./Screens/LoginScreen";
 import SignUpScreen from "./Screens/SignUpScreen";
+import Dashboard from "./Screens/Customers/Dashboard";
+
 
 function App() {
   return (
@@ -9,6 +11,7 @@ function App() {
         <Route path="/login" element={<LoginScreen />} />
         <Route path="/signup" element={<SignUpScreen />} />
         <Route path="/" element={<LoginScreen />} />
+        <Route path="user/home" element={<Dashboard />} />
       </Routes>
     </Router>
   );
