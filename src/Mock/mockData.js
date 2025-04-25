@@ -81,14 +81,18 @@ export const employees = [
 export const rooms = [
   { MaPhong: 1, SoPhong: '101', GiaPhong: 510000, LoaiPhong: 1, Anh: 'https://www.vietnambooking.com/wp-content/uploads/2021/02/khach-san-ho-chi-minh-28.jpg' },
   { MaPhong: 2, SoPhong: '102', GiaPhong: 520000, LoaiPhong: 2, Anh: 'https://decoxdesign.com/upload/images/hotel-caitilin-1952m2-phong-ngu-01-decox-design.jpg' },
-  { MaPhong: 3, SoPhong: '103', GiaPhong: 530000, LoaiPhong: 3, Anh: 'https://noithattrevietnam.com/uploaded/2019/12/1-thiet-ke-phong-ngu-khach-san%20%281%29.jpg' },
-  { MaPhong: 4, SoPhong: '104', GiaPhong: 540000, LoaiPhong: 4, Anh: 'https://anviethouse.vn/wp-content/uploads/2021/12/Thiet-ke-phong-khach-san-4-sao-1-1.jpg' },
-  { MaPhong: 5, SoPhong: '105', GiaPhong: 550000, LoaiPhong: 5, Anh: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7QZJxqS89KSF5Ke6sTTWxpEWt4yTcAhdtHk8yFXYXxZS4ebT2TPHBZvHCiQILBk7wZyY&usqp=CAU' },
-  { MaPhong: 6, SoPhong: '106', GiaPhong: 560000, LoaiPhong: 6, Anh: 'https://tidiarc.vn/wp-content/uploads/2024/01/thiet-ke-phong-ngu-khach-san-6.webp' },
-  { MaPhong: 7, SoPhong: '107', GiaPhong: 570000, LoaiPhong: 7, Anh: 'https://noithatnewdecor.com/wp-content/uploads/2019/01/thi%E1%BA%BFt-k%E1%BA%BF-kh%C3%A1ch-s%E1%BA%A1n-2.jpg' },
-  { MaPhong: 8, SoPhong: '108', GiaPhong: 580000, LoaiPhong: 8, Anh: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8kCrccn5OfMUdpnjPY4YXkVPZIYAqnoL_2Ua8dMuDDErwOOKehg8Sb13geZ1FuRd2UQY&usqp=CAU' },
-  { MaPhong: 9, SoPhong: '109', GiaPhong: 590000, LoaiPhong: 9, Anh: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTUt5OIREjbA6vgnZWVDTRk7L9PFkFPtpXdQ&s' },
-  { MaPhong: 10, SoPhong: '110', GiaPhong: 600000, LoaiPhong: 10, Anh: 'https://blog.dktcdn.net/files/cac-loai-phong-khach-san-4.png' }
+  { MaPhong: 3, SoPhong: '103', GiaPhong: 530000, LoaiPhong: 2, Anh: 'https://noithattrevietnam.com/uploaded/2019/12/1-thiet-ke-phong-ngu-khach-san%20%281%29.jpg' },
+  { MaPhong: 4, SoPhong: '104', GiaPhong: 540000, LoaiPhong: 2, Anh: 'https://anviethouse.vn/wp-content/uploads/2021/12/Thiet-ke-phong-khach-san-4-sao-1-1.jpg' },
+  { MaPhong: 5, SoPhong: '105', GiaPhong: 550000, LoaiPhong: 1, Anh: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7QZJxqS89KSF5Ke6sTTWxpEWt4yTcAhdtHk8yFXYXxZS4ebT2TPHBZvHCiQILBk7wZyY&usqp=CAU' },
+  { MaPhong: 6, SoPhong: '106', GiaPhong: 560000, LoaiPhong: 2, Anh: 'https://tidiarc.vn/wp-content/uploads/2024/01/thiet-ke-phong-ngu-khach-san-6.webp' },
+  { MaPhong: 7, SoPhong: '107', GiaPhong: 570000, LoaiPhong: 1, Anh: 'https://noithatnewdecor.com/wp-content/uploads/2019/01/thi%E1%BA%BFt-k%E1%BA%BF-kh%C3%A1ch-s%E1%BA%A1n-2.jpg' },
+  { MaPhong: 8, SoPhong: '108', GiaPhong: 580000, LoaiPhong: 2, Anh: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8kCrccn5OfMUdpnjPY4YXkVPZIYAqnoL_2Ua8dMuDDErwOOKehg8Sb13geZ1FuRd2UQY&usqp=CAU' },
+  { MaPhong: 9, SoPhong: '109', GiaPhong: 590000, LoaiPhong: 1, Anh: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTUt5OIREjbA6vgnZWVDTRk7L9PFkFPtpXdQ&s' },
+  { MaPhong: 10, SoPhong: '110', GiaPhong: 600000, LoaiPhong: 1, Anh: 'https://blog.dktcdn.net/files/cac-loai-phong-khach-san-4.png' },
+  { MaPhong: 11, SoPhong: '111', GiaPhong: 600000, LoaiPhong: 2, Anh: 'https://blog.dktcdn.net/files/cac-loai-phong-khach-san-4.png' },
+  { MaPhong: 12, SoPhong: '112', GiaPhong: 600000, LoaiPhong: 1, Anh: 'https://blog.dktcdn.net/files/cac-loai-phong-khach-san-4.png' }
+
+
 ];
 
 export const bookings = [
