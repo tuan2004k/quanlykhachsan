@@ -1,74 +1,64 @@
-// src/pages/Home.jsx
-import React, { useState } from 'react';
-import Banner from '../../Components/Banner';
-import HorizontalSearchBox from '../../Components/componentUser/SearchBox';
-import RoomCard from '../../Components/RoomCard';
-import Modal from '../../Components/Modal';
-import FilterPanel from '../../Components/componentUser/FilterPanel'; // New component
-import { rooms, roomTypes } from '../../Mock/mockData';
-import Header from '../../Common/Header';
-import Footer from '../../Common/Footer';
+import React, { useState } from "react";
+import Banner from "../../Components/Banner";
+import SearchBox from "../../Components/componentUser/SearchBox";
+import FilterPanel from "../../Components/componentUser/FilterPanel";
+import RoomList from "../../Components/RoomList";
+import Modal from "../../Components/Modal";
+import { rooms, roomTypes } from "../../Mock/mockData";
+import Header from "../../Common/Header";
+import Footer from "../../Common/Footer";
+import useRoomFilter from "../../hooks/useHome";
+import PromotionCard from "../../Components/componentUser/PromotionCard";
 
 const Home = () => {
-  const [filteredRooms, setFilteredRooms] = useState(rooms);
+  const {
+    filteredRooms,
+    minPrice,
+    maxPrice,
+    minPriceLimit,
+    maxPriceLimit,
+    roomTypeOptions,
+    selectedRoomTypes,
+    handleSearch,
+    handleMinPriceChange,
+    handleMaxPriceChange,
+    handleRoomTypeChange,
+    handleResetFilter,
+  } = useRoomFilter();
+
   const [showModal, setShowModal] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState(null);
 
-  // Search and filter handler
-  const handleSearch = (searchData) => {
-    const { roomName, roomType, minPrice, maxPrice } = searchData;
-    const filtered = rooms.filter((room) => {
-      const matchesRoomName = roomName
-        ? room.SoPhong.toLowerCase().includes(roomName.toLowerCase())
-        : true;
-      const matchesRoomType = roomType
-        ? room.LoaiPhong === roomType
-        : true;
-      const matchesMinPrice = minPrice
-        ? room.GiaPhong >= parseFloat(minPrice)
-        : true;
-      const matchesMaxPrice = maxPrice
-        ? room.GiaPhong <= parseFloat(maxPrice)
-        : true;
-      return matchesRoomName && matchesRoomType && matchesMinPrice && matchesMaxPrice;
-    });
-    setFilteredRooms(filtered);
-  };
-
-  // Booking handler
   const handleBookRoom = (roomId) => {
     setSelectedRoomId(roomId);
     setShowModal(true);
   };
 
-  // Close modal
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedRoomId(null);
   };
 
-  // SearchBox fields configuration
   const searchFields = [
     {
-      name: 'roomName',
-      label: 'Room Name',
-      type: 'text',
-      placeholder: 'Enter room name...',
+      name: "roomName",
+      label: "Room Name",
+      type: "text",
+      placeholder: "Enter room name...",
     },
     {
-      name: 'roomType',
-      label: 'Room Type',
-      type: 'select',
+      name: "roomType",
+      label: "Room Type",
+      type: "select",
       options: [
-        { value: '', label: 'All' },
-        { value: 'standard', label: 'Standard' },
-        { value: 'deluxe', label: 'Deluxe' },
-        { value: 'suite', label: 'Suite' },
+        { value: "", label: "All" },
+        { value: "standard", label: "Standard" },
+        { value: "deluxe", label: "Deluxe" },
+        { value: "suite", label: "Suite" },
       ],
     },
   ];
 
-  // Modal content for booking
   const selectedRoom = rooms.find((r) => r.MaPhong === selectedRoomId);
   const selectedRoomType = roomTypes.find((rt) => rt.MaLoaiPhong === selectedRoom?.LoaiPhong);
 
@@ -79,7 +69,7 @@ const Home = () => {
         <Banner />
         <div className="container mx-auto px-4 pt-10 pb-20">
           <div className="relative z-10 -mt-24 mb-12">
-            <HorizontalSearchBox
+            <SearchBox
               fields={searchFields}
               onSearch={handleSearch}
               buttonText="Search Rooms"
@@ -87,34 +77,28 @@ const Home = () => {
           </div>
           <h1 className="text-3xl font-bold mb-8 text-center">Danh sách Phòng</h1>
           <div className="flex flex-col lg:flex-row gap-6">
-            {/* Filter Panel (20%) */}
             <div className="lg:w-1/5 w-full">
-              <FilterPanel onFilter={handleSearch} />
+              <FilterPanel
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                minPriceLimit={minPriceLimit}
+                maxPriceLimit={maxPriceLimit}
+                roomTypeOptions={roomTypeOptions}
+                selectedRoomTypes={selectedRoomTypes}
+                onMinPriceChange={handleMinPriceChange}
+                onMaxPriceChange={handleMaxPriceChange}
+                onRoomTypeChange={handleRoomTypeChange}
+                onResetFilter={handleResetFilter}
+              />
             </div>
-            {/* Room List (80%) */}
             <div className="lg:w-4/5 w-full">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {filteredRooms.length > 0 ? (
-                  filteredRooms.map((room) => (
-                    <RoomCard
-                      key={room.MaPhong}
-                      roomId={room.MaPhong}
-                      onBookRoom={handleBookRoom}
-                    />
-                  ))
-                ) : (
-                  <p className="text-center text-gray-500 col-span-full">
-                    Không tìm thấy phòng phù hợp.
-                  </p>
-                )}
-              </div>
+              <RoomList filteredRooms={filteredRooms} onBookRoom={handleBookRoom} />
             </div>
           </div>
+          <PromotionCard promotionId={3}/>
         </div>
       </main>
       <Footer />
-
-      {/* Modal for booking */}
       {showModal && selectedRoom && (
         <Modal onClose={handleCloseModal}>
           <div className="p-6">
@@ -123,7 +107,7 @@ const Home = () => {
               <strong>Phòng:</strong> {selectedRoom.SoPhong}
             </p>
             <p className="mb-2">
-              <strong>Loại phòng:</strong> {selectedRoomType?.GhiChu || 'Không xác định'}
+              <strong>Loại phòng:</strong> {selectedRoomType?.GhiChu || "Không xác định"}
             </p>
             <p className="mb-4">
               <strong>Giá:</strong> {selectedRoom.GiaPhong.toLocaleString()} VND

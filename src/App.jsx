@@ -1,20 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginScreen from "./Screens/LoginScreen";
-import SignUpScreen from "./Screens/SignUpScreen";
-import Dashboard from "./Screens/Customers/Dashboard";
 
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes";
 
 function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<LoginScreen />} />
-        <Route path="/signup" element={<SignUpScreen />} />
-        <Route path="/" element={<LoginScreen />} />
-        <Route path="user/home" element={<Dashboard />} />
-      </Routes>
-    </Router>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
