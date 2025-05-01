@@ -1,20 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import InputField from "../Components/InputField"; 
-import Button from "../Components/Button"; 
-import Hotel from "../assets/Image/Hotel.jpg"
+import { Link, useNavigate } from "react-router-dom";
+import InputField from "../Components/InputField";
+import Button from "../Components/Button";
+import Hotel from "../assets/Image/Hotel.jpg";
+import { login } from "../apis/Auth";
 
 const LoginScreen = () => {
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   // Regex kiểm tra email
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-  // Regex kiểm tra số điện thoại (chỉ là ví dụ, bạn có thể tùy chỉnh theo yêu cầu)
+  // Regex kiểm tra số điện thoại
   const phoneRegex = /^[0-9]{10,15}$/;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
@@ -32,9 +34,35 @@ const LoginScreen = () => {
 
     setErrors(newErrors);
 
+    // Nếu không có lỗi, gọi API login
     if (Object.keys(newErrors).length === 0) {
-      console.log("Login with:", { emailOrPhone, password });
-      // Gọi API để login ở đây
+      try {
+        // Xóa token cũ để tránh xung đột
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+
+        // Gọi hàm login
+        const data = await login(emailOrPhone, password);
+        console.log("Đăng nhập thành công:", data);
+
+        // Lưu token và thông tin người dùng
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+        }
+        if (data.user) {
+          localStorage.setItem('user', JSON.stringify(data.user));
+        }
+
+        // Chuyển hướng dựa trên vai trò
+        if (data.user?.role === "Quản trị viên") {
+          navigate('/admin/dashboard'); // Chuyển hướng cho admin
+        } else {
+          navigate('/user/home'); // Chuyển hướng cho người dùng thường
+        }
+      } catch (error) {
+        console.error("Lỗi khi đăng nhập:", error.message);
+        setErrors({ api: error.message || "Email hoặc mật khẩu không đúng" });
+      }
     }
   };
 
@@ -95,6 +123,8 @@ const LoginScreen = () => {
               error={errors.password}
             />
             {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+            
+            {errors.api && <p className="text-red-500 text-sm">{errors.api}</p>}
 
             <div className="text-right">
               <Link to="/forgot-password" className="text-sm text-indigo-600 hover:underline">

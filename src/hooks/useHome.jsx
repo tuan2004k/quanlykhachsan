@@ -1,33 +1,53 @@
-// src/hooks/useHome.js
-import { useState } from "react";
-import { rooms } from "../Mock/mockData";
+import { useState, useEffect } from "react";
+import { getRooms } from "../apis/apiroom";
 
 const useHome = () => {
-  const minPriceLimit = Math.min(...rooms.map((r) => r.GiaPhong)) || 0;
-  const maxPriceLimit = Math.max(...rooms.map((r) => r.GiaPhong)) || 10000000;
+  const [rooms, setRooms] = useState([]);
+  const [filteredRooms, setFilteredRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Khởi tạo minPriceLimit và maxPriceLimit (giả định vì không có GiaPhong)
+  const minPriceLimit = 0;
+  const maxPriceLimit = 10000000;
   const [minPrice, setMinPrice] = useState(minPriceLimit);
   const [maxPrice, setMaxPrice] = useState(maxPriceLimit);
 
-  const roomTypeOptions = [...new Set(rooms.map((r) => r.LoaiPhong).filter(Boolean))] || [
-    "standard",
-    "deluxe",
-    "suite",
+  // Lấy danh sách loại phòng từ ghiChu
+  const roomTypeOptions = [...new Set(rooms.map((r) => r.ghiChu).filter(Boolean))] || [
+    "Phòng đơn",
+    "Phòng đôi",
+    "Phòng gia đình",
   ];
   const [selectedRoomTypes, setSelectedRoomTypes] = useState([]);
 
-  const [filteredRooms, setFilteredRooms] = useState(rooms);
+  // Gọi API để lấy danh sách phòng
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        setLoading(true);
+        const roomsData = await getRooms();
+        console.log('Danh sách phòng:', roomsData);
+        setRooms(roomsData);
+        setFilteredRooms(roomsData);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+    fetchRooms();
+  }, []);
 
   const handleSearch = (searchData) => {
     const { roomName = "", roomType = "", minPrice, maxPrice, roomTypes = [] } = searchData;
     const filtered = rooms.filter((room) => {
       const matchesRoomName = roomName
-        ? room.SoPhong.toLowerCase().includes(roomName.toLowerCase())
+        ? room.soPhong.toLowerCase().includes(roomName.toLowerCase())
         : true;
-      const matchesRoomType = roomType ? room.LoaiPhong === roomType : true;
-      const matchesMinPrice = minPrice ? room.GiaPhong >= parseFloat(minPrice) : true;
-      const matchesMaxPrice = maxPrice ? room.GiaPhong <= parseFloat(maxPrice) : true;
-      const matchesRoomTypes = roomTypes.length > 0 ? roomTypes.includes(room.LoaiPhong) : true;
-      return matchesRoomName && matchesRoomType && matchesMinPrice && matchesMaxPrice && matchesRoomTypes;
+      const matchesRoomType = roomType ? room.ghiChu === roomType : true;
+      const matchesRoomTypes = roomTypes.length > 0 ? roomTypes.includes(room.ghiChu) : true;
+      return matchesRoomName && matchesRoomType && matchesRoomTypes;
     });
     setFilteredRooms(filtered);
   };
@@ -74,6 +94,9 @@ const useHome = () => {
     handleMaxPriceChange,
     handleRoomTypeChange,
     handleResetFilter,
+    setRooms,
+    loading,
+    error,
   };
 };
 

@@ -4,7 +4,6 @@ import SearchBox from "../../Components/componentUser/SearchBox";
 import FilterPanel from "../../Components/componentUser/FilterPanel";
 import RoomList from "../../Components/RoomList";
 import Modal from "../../Components/Modal";
-import { rooms, roomTypes } from "../../Mock/mockData";
 import Header from "../../Common/Header";
 import Footer from "../../Common/Footer";
 import useRoomFilter from "../../hooks/useHome";
@@ -24,12 +23,15 @@ const Home = () => {
     handleMaxPriceChange,
     handleRoomTypeChange,
     handleResetFilter,
+    loading,
+    error,
   } = useRoomFilter();
 
   const [showModal, setShowModal] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState(null);
 
   const handleBookRoom = (roomId) => {
+    console.log('Room ID selected:', roomId);
     setSelectedRoomId(roomId);
     setShowModal(true);
   };
@@ -52,15 +54,21 @@ const Home = () => {
       type: "select",
       options: [
         { value: "", label: "All" },
-        { value: "standard", label: "Standard" },
-        { value: "deluxe", label: "Deluxe" },
-        { value: "suite", label: "Suite" },
+        { value: "Phòng đơn", label: "Phòng đơn" },
+        { value: "Phòng đôi", label: "Phòng đôi" },
+        { value: "Phòng gia đình", label: "Phòng gia đình" },
       ],
     },
   ];
 
-  const selectedRoom = rooms.find((r) => r.MaPhong === selectedRoomId);
-  const selectedRoomType = roomTypes.find((rt) => rt.MaLoaiPhong === selectedRoom?.LoaiPhong);
+  const selectedRoom = filteredRooms.find((r) => r.maPhong === selectedRoomId);
+  console.log('Filtered rooms:', filteredRooms);
+  console.log('Selected room:', selectedRoom);
+
+
+  if (error) {
+    return <div className="text-center py-10 text-red-500">Lỗi: {error}</div>;
+  }
 
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col">
@@ -95,23 +103,29 @@ const Home = () => {
               <RoomList filteredRooms={filteredRooms} onBookRoom={handleBookRoom} />
             </div>
           </div>
-          <PromotionCard promotionId={3}/>
+          <PromotionCard promotionId={3} />
         </div>
       </main>
       <Footer />
-      {showModal && selectedRoom && (
+      {showModal && (
         <Modal onClose={handleCloseModal}>
           <div className="p-6">
             <h2 className="text-2xl font-bold mb-4">Xác nhận đặt phòng</h2>
-            <p className="mb-2">
-              <strong>Phòng:</strong> {selectedRoom.SoPhong}
-            </p>
-            <p className="mb-2">
-              <strong>Loại phòng:</strong> {selectedRoomType?.GhiChu || "Không xác định"}
-            </p>
-            <p className="mb-4">
-              <strong>Giá:</strong> {selectedRoom.GiaPhong.toLocaleString()} VND
-            </p>
+            {selectedRoom ? (
+              <>
+                <p className="mb-2">
+                  <strong>Phòng:</strong> {selectedRoom.soPhong || "Không xác định"}
+                </p>
+                <p className="mb-2">
+                  <strong>Loại phòng:</strong> {selectedRoom.ghiChu || "Không xác định"}
+                </p>
+                <p className="mb-4">
+                  <strong>Số giường:</strong> {selectedRoom.soGiuong || "Không xác định"}
+                </p>
+              </>
+            ) : (
+              <p className="mb-4 text-red-500">Không tìm thấy thông tin phòng.</p>
+            )}
             <div className="flex gap-4">
               <button
                 onClick={handleCloseModal}
@@ -121,7 +135,9 @@ const Home = () => {
               </button>
               <button
                 onClick={() => {
-                  console.log(`Đặt phòng ${selectedRoom.SoPhong}`);
+                  if (selectedRoom) {
+                    console.log(`Đặt phòng ${selectedRoom.soPhong}`);
+                  }
                   handleCloseModal();
                 }}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"

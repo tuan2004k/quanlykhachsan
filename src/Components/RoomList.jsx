@@ -7,9 +7,9 @@ const RoomList = ({ filteredRooms, onBookRoom }) => {
       {filteredRooms.length > 0 ? (
         filteredRooms.map((room) => (
           <RoomCard
-          className = "pb-4"
-            key={room.MaPhong}
-            roomId={room.MaPhong}
+            className="pb-4"
+            key={room.maPhong}
+            room={room} // Truyền toàn bộ object room
             onBookRoom={onBookRoom}
           />
         ))
