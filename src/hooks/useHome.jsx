@@ -7,41 +7,56 @@ const useHome = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Khởi tạo minPriceLimit và maxPriceLimit (giả định vì không có GiaPhong)
   const minPriceLimit = 0;
   const maxPriceLimit = 10000000;
   const [minPrice, setMinPrice] = useState(minPriceLimit);
   const [maxPrice, setMaxPrice] = useState(maxPriceLimit);
 
-  // Lấy danh sách loại phòng từ ghiChu
-  const roomTypeOptions = [...new Set(rooms.map((r) => r.ghiChu).filter(Boolean))] || [
-    "Phòng đơn",
-    "Phòng đôi",
-    "Phòng gia đình",
-  ];
+  const roomTypeOptions = Array.isArray(rooms) && rooms.length > 0
+    ? [...new Set(rooms.map((r) => r.ghiChu).filter(Boolean))]
+    : ["Phòng đơn", "Phòng đôi", "Phòng gia đình"];
   const [selectedRoomTypes, setSelectedRoomTypes] = useState([]);
 
-  // Gọi API để lấy danh sách phòng
   useEffect(() => {
-    const fetchRooms = async () => {
+    const fetchAllRooms = async () => {
       try {
         setLoading(true);
-        const roomsData = await getRooms();
-        console.log('Danh sách phòng:', roomsData);
-        setRooms(roomsData);
-        setFilteredRooms(roomsData);
+        let allRooms = [];
+        let page = 1;
+        const pageSize = 10; // Giả định pageSize mặc định từ API
+        let hasMore = true;
+
+        while (hasMore) {
+          const roomsData = await getRooms(page, pageSize);
+          console.log(`Danh sách phòng trang ${page} (API Response):`, roomsData);
+
+          if (roomsData && Array.isArray(roomsData.data)) {
+            allRooms = [...allRooms, ...roomsData.data];
+            if (page >= roomsData.totalPages || roomsData.totalPages === 0) {
+              hasMore = false;
+            } else {
+              page++;
+            }
+          } else {
+            console.warn('Dữ liệu từ API không hợp lệ:', roomsData);
+            hasMore = false;
+          }
+        }
+
+        setRooms(allRooms);
+        setFilteredRooms(allRooms);
         setLoading(false);
       } catch (error) {
         setError(error.message);
         setLoading(false);
       }
     };
-    fetchRooms();
+    fetchAllRooms();
   }, []);
 
   const handleSearch = (searchData) => {
     const { roomName = "", roomType = "", minPrice, maxPrice, roomTypes = [] } = searchData;
-    const filtered = rooms.filter((room) => {
+    const filtered = (Array.isArray(rooms) ? rooms : []).filter((room) => {
       const matchesRoomName = roomName
         ? room.soPhong.toLowerCase().includes(roomName.toLowerCase())
         : true;

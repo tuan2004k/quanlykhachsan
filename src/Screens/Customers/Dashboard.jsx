@@ -7,7 +7,7 @@ import Modal from "../../Components/Modal";
 import Header from "../../Common/Header";
 import Footer from "../../Common/Footer";
 import useRoomFilter from "../../hooks/useHome";
-import PromotionCard from "../../Components/componentUser/PromotionCard";
+import PromotionBanner from "../../Components/componentUser/PromotionCard";
 
 const Home = () => {
   const {
@@ -29,6 +29,8 @@ const Home = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const roomsPerPage = 8; // 2 rows x 4 columns
 
   const handleBookRoom = (roomId) => {
     console.log('Room ID selected:', roomId);
@@ -65,6 +67,21 @@ const Home = () => {
   console.log('Filtered rooms:', filteredRooms);
   console.log('Selected room:', selectedRoom);
 
+  // Pagination logic
+  const totalRooms = filteredRooms.length;
+  const totalPages = Math.ceil(totalRooms / roomsPerPage);
+  const indexOfLastRoom = currentPage * roomsPerPage;
+  const indexOfFirstRoom = indexOfLastRoom - roomsPerPage;
+  const currentRooms = filteredRooms.slice(indexOfFirstRoom, indexOfLastRoom);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  if (loading) {
+    return <div className="text-center py-10">Đang tải...</div>;
+  }
 
   if (error) {
     return <div className="text-center py-10 text-red-500">Lỗi: {error}</div>;
@@ -84,6 +101,7 @@ const Home = () => {
             />
           </div>
           <h1 className="text-3xl font-bold mb-8 text-center">Danh sách Phòng</h1>
+          <p className="text-center mb-4">Tổng số phòng: {totalRooms}</p>
           <div className="flex flex-col lg:flex-row gap-6">
             <div className="lg:w-1/5 w-full">
               <FilterPanel
@@ -100,10 +118,46 @@ const Home = () => {
               />
             </div>
             <div className="lg:w-4/5 w-full">
-              <RoomList filteredRooms={filteredRooms} onBookRoom={handleBookRoom} />
+              {currentRooms.length > 0 ? (
+                <RoomList filteredRooms={currentRooms} onBookRoom={handleBookRoom} />
+              ) : (
+                <div className="text-center py-10">Không tìm thấy phòng nào.</div>
+              )}
+              {/* Pagination Controls */}
+              {totalRooms > roomsPerPage && (
+                <div className="flex justify-center pb-20 space-x-2">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg disabled:opacity-50 hover:bg-gray-400"
+                  >
+                    Trước
+                  </button>
+                  {[...Array(totalPages).keys()].map((page) => (
+                    <button
+                      key={page + 1}
+                      onClick={() => handlePageChange(page + 1)}
+                      className={`px-4 py-2 rounded-lg ${
+                        currentPage === page + 1
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-300 text-gray-800 hover:bg-gray-400"
+                      }`}
+                    >
+                      {page + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg disabled:opacity-50 hover:bg-gray-400"
+                  >
+                    Sau
+                  </button>
+                </div>
+              )}
             </div>
           </div>
-          <PromotionCard promotionId={3} />
+          <PromotionBanner />
         </div>
       </main>
       <Footer />

@@ -98,24 +98,7 @@ const FilterPanel = ({
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-600 mb-2">
-            Lọc theo khuyến mãi
-          </label>
-          <div className="space-y-2">
-            {promotionOptions.map((promotion) => (
-              <label key={promotion} className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={selectedPromotions.includes(promotion)}
-                  onChange={() => onPromotionChange(promotion)}
-                  className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                />
-                <span className="ml-2 text-sm text-gray-600">
-                  {promotion}
-                </span>
-              </label>
-            ))}
-          </div>
+          
         </div>
         <Button
           onClick={onResetFilter}

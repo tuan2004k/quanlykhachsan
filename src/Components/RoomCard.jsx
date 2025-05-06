@@ -36,7 +36,7 @@ const RoomCard = ({ room, onBookRoom }) => {
             className="w-full bg-blue-600 text-white font-semibold py-2 px-4 hover:bg-blue-700 text-sm sm:text-base cursor-pointer"
             onClick={() => onBookRoom?.(room.maPhong)}
           >
-            Thêm danh sách Booking
+            Xem chi tiết
           </Button>
         </div>
       </div>

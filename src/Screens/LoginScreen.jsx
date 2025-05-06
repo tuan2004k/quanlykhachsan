@@ -16,6 +16,13 @@ const LoginScreen = () => {
   // Regex kiểm tra số điện thoại
   const phoneRegex = /^[0-9]{10,15}$/;
 
+  // Danh sách ánh xạ vai trò
+  const roleMapping = {
+    1: "Quản lý",
+    2: "Lễ tân",
+    3: "Phục vụ",
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -45,20 +52,37 @@ const LoginScreen = () => {
         const data = await login(emailOrPhone, password);
         console.log("Đăng nhập thành công:", data);
 
+        // Ánh xạ vai trò từ số sang chuỗi
+        const roleId = data.user?.vaiTro;
+        const roleName = roleMapping[roleId];
+        if (!roleName) {
+          throw new Error("Vai trò không hợp lệ. Chỉ Quản lý, Lễ tân hoặc Phục vụ được phép đăng nhập!");
+        }
+
         // Lưu token và thông tin người dùng
         if (data.token) {
           localStorage.setItem('token', data.token);
+          console.log("Đã lưu token vào localStorage:", data.token);
         }
         if (data.user) {
-          localStorage.setItem('user', JSON.stringify(data.user));
+          const userData = {
+            name: data.user.ho + " " + data.user.ten || 'Unknown User',
+            email: data.user.email || emailOrPhone,
+            avatar: data.user.avatar || 'https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740',
+            role: roleName, // Lưu tên vai trò đã ánh xạ
+            maNhanVien: data.user.maNhanVien,
+          };
+          localStorage.setItem('user', JSON.stringify(userData));
+          console.log("Đã lưu user vào localStorage:", userData);
         }
 
         // Chuyển hướng dựa trên vai trò
-        if (data.user?.role === "Quản trị viên") {
-          navigate('/admin/dashboard'); // Chuyển hướng cho admin
-        } else {
-          navigate('/user/home'); // Chuyển hướng cho người dùng thường
+        if (roleName === "Quản lý") {
+          navigate('/admin/dashboard'); // Chuyển hướng cho Quản lý
+        } else if (roleName === "Lễ tân" || roleName === "Phục vụ") {
+          navigate('/staff/home'); // Chuyển hướng cho Nhân viên
         }
+        
       } catch (error) {
         console.error("Lỗi khi đăng nhập:", error.message);
         setErrors({ api: error.message || "Email hoặc mật khẩu không đúng" });
