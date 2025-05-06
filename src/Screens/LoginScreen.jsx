@@ -1,20 +1,29 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import InputField from "../Components/InputField"; 
-import Button from "../Components/Button"; 
-import Hotel from "../assets/Image/Hotel.jpg"
+import { Link, useNavigate } from "react-router-dom";
+import InputField from "../Components/InputField";
+import Button from "../Components/Button";
+import Hotel from "../assets/Image/Hotel.jpg";
+import { login } from "../apis/Auth";
 
 const LoginScreen = () => {
   const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   // Regex kiểm tra email
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-  // Regex kiểm tra số điện thoại (chỉ là ví dụ, bạn có thể tùy chỉnh theo yêu cầu)
+  // Regex kiểm tra số điện thoại
   const phoneRegex = /^[0-9]{10,15}$/;
 
-  const handleSubmit = (e) => {
+  // Danh sách ánh xạ vai trò
+  const roleMapping = {
+    1: "Quản lý",
+    2: "Lễ tân",
+    3: "Phục vụ",
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
@@ -32,9 +41,52 @@ const LoginScreen = () => {
 
     setErrors(newErrors);
 
+    // Nếu không có lỗi, gọi API login
     if (Object.keys(newErrors).length === 0) {
-      console.log("Login with:", { emailOrPhone, password });
-      // Gọi API để login ở đây
+      try {
+        // Xóa token cũ để tránh xung đột
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+
+        // Gọi hàm login
+        const data = await login(emailOrPhone, password);
+        console.log("Đăng nhập thành công:", data);
+
+        // Ánh xạ vai trò từ số sang chuỗi
+        const roleId = data.user?.vaiTro;
+        const roleName = roleMapping[roleId];
+        if (!roleName) {
+          throw new Error("Vai trò không hợp lệ. Chỉ Quản lý, Lễ tân hoặc Phục vụ được phép đăng nhập!");
+        }
+
+        // Lưu token và thông tin người dùng
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          console.log("Đã lưu token vào localStorage:", data.token);
+        }
+        if (data.user) {
+          const userData = {
+            name: data.user.ho + " " + data.user.ten || 'Unknown User',
+            email: data.user.email || emailOrPhone,
+            avatar: data.user.avatar || 'https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740',
+            role: roleName, // Lưu tên vai trò đã ánh xạ
+            maNhanVien: data.user.maNhanVien,
+          };
+          localStorage.setItem('user', JSON.stringify(userData));
+          console.log("Đã lưu user vào localStorage:", userData);
+        }
+
+        // Chuyển hướng dựa trên vai trò
+        if (roleName === "Quản lý") {
+          navigate('/admin/dashboard'); // Chuyển hướng cho Quản lý
+        } else if (roleName === "Lễ tân" || roleName === "Phục vụ") {
+          navigate('/staff/home'); // Chuyển hướng cho Nhân viên
+        }
+        
+      } catch (error) {
+        console.error("Lỗi khi đăng nhập:", error.message);
+        setErrors({ api: error.message || "Email hoặc mật khẩu không đúng" });
+      }
     }
   };
 
@@ -95,6 +147,8 @@ const LoginScreen = () => {
               error={errors.password}
             />
             {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+            
+            {errors.api && <p className="text-red-500 text-sm">{errors.api}</p>}
 
             <div className="text-right">
               <Link to="/forgot-password" className="text-sm text-indigo-600 hover:underline">

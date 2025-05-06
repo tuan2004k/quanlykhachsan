@@ -5,7 +5,7 @@ const Button = ({ type = "button", onClick, className, children }) => {
     <button
       type={type}
       onClick={onClick}
-      className={`w fullpy-3 px-6 rounded-lg  ${className}`}
+      className={`w fullpy-3 px-6   ${className}`}
     >
       {children}
     </button>
