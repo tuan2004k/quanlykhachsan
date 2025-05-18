@@ -10,7 +10,7 @@ const RoomForm = ({ visible, onCancel, onSave, room }) => {
     form
       .validateFields()
       .then((values) => {
-        onSave(values); 
+        onSave(values);
         form.resetFields();
       })
       .catch((info) => {
@@ -56,6 +56,13 @@ const RoomForm = ({ visible, onCancel, onSave, room }) => {
           rules={[{ required: true, message: 'Vui lòng nhập số giường' }]}
         >
           <InputNumber min={1} className="w-full" />
+        </Form.Item>
+        <Form.Item
+          name="giaPhong"
+          label="Giá Phòng"
+          rules={[{ required: true, message: 'Vui lòng nhập giá phòng' }]}
+        >
+          <InputNumber min={0} className="w-full" />
         </Form.Item>
         <Form.Item
           name="tinhTrangPhong"

@@ -4,7 +4,7 @@ import SearchBox from "../../Components/componentUser/SearchBox";
 import FilterPanel from "../../Components/componentUser/FilterPanel";
 import RoomList from "../../Components/RoomList";
 import Modal from "../../Components/Modal";
-import Header from "../../Common/Header";
+import Header from "../../Components/componentUser/Header";
 import Footer from "../../Common/Footer";
 import useRoomFilter from "../../hooks/useHome";
 import PromotionBanner from "../../Components/componentUser/PromotionCard";

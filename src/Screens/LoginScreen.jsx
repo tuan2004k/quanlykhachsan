@@ -79,7 +79,7 @@ const LoginScreen = () => {
         // Chuyển hướng dựa trên vai trò
         if (roleName === "Quản lý") {
           navigate('/admin/dashboard'); // Chuyển hướng cho Quản lý
-        } else if (roleName === "Lễ tân" || roleName === "Phục vụ") {
+        } else if (roleName === "Nhân viên" || roleName === "Phục vụ") {
           navigate('/staff/home'); // Chuyển hướng cho Nhân viên
         }
         

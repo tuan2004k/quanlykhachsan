@@ -6,7 +6,9 @@ import Dashboard from "../Screens/Customers/Dashboard";
 import RoomManagement from "../Screens/Admin/RoomManagement";
 import EmployeeManegement from "../Screens/Admin/EmployeeManagement";
 import PromotionsPage from "../Screens/Admin/PromotionManagement";
-import AdminDashBoard from "../Screens/Admin/AdminDashBoard";// import ServiceManagement from "../Screens/Admin/ServiceManagement";
+import AdminDashBoard from "../Screens/Admin/AdminDashBoard";
+ import ServiceManagement from "../Screens/Admin/ServiceManagement";
+ import BillManagement from "../Screens/Admin/BillManagement";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +28,10 @@ export const router = createBrowserRouter([
     element: <Dashboard />, // Home.jsx
   },
   {
+    path: "/admin/dashboard",
+    element: <AdminDashBoard />
+  },
+  {
     path: "/admin/room_management",
     element: <RoomManagement />,
   },
@@ -37,14 +43,18 @@ export const router = createBrowserRouter([
     path: "/admin/room_management/promotions",
     element: <PromotionsPage />,
   },
+  
   {
-    path: "/admin/dashboard",
-    element: <AdminDashBoard />
+    path: "/admin/room_management/services",
+    element: <ServiceManagement />,
   },
-  // {
-  //   path: "/admin/room_management/service",
-  //   element: <ServiceManagement />,
-  // }
+  {
+    path: "/admin/bill",
+    element: <BillManagement/>,
+  }
+  
+
+
 
 
 ]);

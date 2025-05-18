@@ -11,7 +11,7 @@ const RoomCard = ({ room, onBookRoom }) => {
         <div className="bg-white border border-gray-200 shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
           <img
             className="w-full h-48 object-cover sm:h-40 md:h-48"
-            src={room.anh || 'https://source.unsplash.com/featured/?hotel-room'}
+            src={room.anh || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPjzZo5vrIhhAYMg10uFFk9aoDJ2Z3he7a5g&s'}
             alt={`Phòng ${room.soPhong}`}
             loading="lazy"
           />
@@ -24,6 +24,9 @@ const RoomCard = ({ room, onBookRoom }) => {
             </p>
             <p className="text-sm text-gray-600 mb-4 sm:text-base">
               Số giường: {room.soGiuong}
+            </p>
+            <p className="text-sm text-gray-600 mb-4 sm:text-base">
+              Giá phòng: {room.giaPhong?.toLocaleString() || 'Liên hệ'} VND
             </p>
             {/* Nếu có giá phòng từ API, bỏ comment */}
             {/* <p className="text-sm font-bold text-yellow-600 mb-4 sm:text-base">
