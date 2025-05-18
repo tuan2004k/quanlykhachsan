@@ -81,10 +81,11 @@ const Sidebar = () => {
     },
     {
       key: '5',
-      icon: <UserAddOutlined />,
-      label: 'Tạo tài khoản',
-      path: '/create-account',
+      icon: <ShoppingCartOutlined />,
+      label: 'Quản lý hóa đơn',
+      path: '/admin/bill',
     },
+    
   ];
 
   return (

@@ -8,6 +8,7 @@ const RoomList = ({ rooms, onEdit, onDelete }) => {
     { title: 'Số Phòng', dataIndex: 'soPhong', key: 'soPhong' },
     { title: 'Loại Phòng', dataIndex: 'ghiChu', key: 'ghiChu' },
     { title: 'Số Giường', dataIndex: 'soGiuong', key: 'soGiuong' },
+    { title: 'Giá Phòng', dataIndex: 'giaPhong', key: 'giaPhong' },
     {
       title: 'Trạng Thái',
       dataIndex: 'tinhTrangPhong',
@@ -29,7 +30,7 @@ const RoomList = ({ rooms, onEdit, onDelete }) => {
             className="bg-blue-600 text-white hover:bg-blue-700"
           />
           <Popconfirm
-            title="Bạn có chắc muốn xóa khuyến mãi này?"
+            title="Bạn có chắc muốn xóa phòng này?"
             onConfirm={() => onDelete(record.maPhong)}
             okText="Xóa"
             cancelText="Hủy"

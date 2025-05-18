@@ -5,28 +5,25 @@ const PromotionBanner = () => {
   const [promotions, setPromotions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
-
-  // Fetch promotions from API
   useEffect(() => {
     const loadPromotions = async () => {
       setLoading(true);
-      const data = await fetchPromotions(1, 10); // Fetch first page with 10 items
+      const data = await fetchPromotions(1, 10); 
       setPromotions(data);
       setLoading(false);
     };
     loadPromotions();
   }, []);
 
-  // Automatically slide to the next promotion every 3 seconds
   useEffect(() => {
     if (promotions.length > 0) {
       const interval = setInterval(() => {
         setCurrentIndex((prevIndex) =>
           prevIndex === promotions.length - 1 ? 0 : prevIndex + 1
         );
-      }, 3000); // 3 seconds interval
+      }, 3000); 
 
-      return () => clearInterval(interval); // Cleanup on unmount
+      return () => clearInterval(interval); 
     }
   }, [promotions]);
 
@@ -67,7 +64,6 @@ const PromotionBanner = () => {
           </div>
         ))}
       </div>
-      {/* Pagination Dots */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {promotions.map((_, index) => (
           <button
