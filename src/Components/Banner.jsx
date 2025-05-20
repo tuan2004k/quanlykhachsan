@@ -1,11 +1,11 @@
 // src/components/Banner.jsx
 import React, { useState, useEffect } from 'react';
 import bannerImage1 from '../assets/Image/Hotel.jpg';
-import bannerImage2 from '../assets/Image/hotel2.jpeg'; // Thêm các ảnh khác
+import bannerImage2 from '../assets/Image/Hotel2.jpeg'; // Thêm các ảnh khác
 import bannerImage3 from '../assets/Image/hotel3.jpg';
 
 const banners = [
-  {
+  { 
     image: bannerImage1,
     title: 'Chào mừng đến với Khách Sạn 8Bross',
     description: 'Trải nghiệm không gian nghỉ dưỡng thoải mái và hiện đại.',
