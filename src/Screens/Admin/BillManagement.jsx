@@ -22,7 +22,7 @@ const BillCard = ({ bill }) => {
       <div className="flex flex-col md:flex-row md:space-x-4 text-sm text-gray-700">
             {/* Cột 1 - 30% */}
             <div className="md:basis-[30%] space-y-1">
-              <p><strong>Ngày đặt:</strong> {bookingDate}</p>
+              <p><strong>Ngày đặt :</strong> {bookingDate}</p>
               <p><strong>Ngày xuất:</strong> {invoiceDate}</p>
               <p><strong>Email:</strong> {customer?.email}</p>
               <p><strong>SDT:</strong> {customer?.sdt}</p>
